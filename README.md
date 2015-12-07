@@ -7,15 +7,18 @@ This project makes it easy to put your Django site into "maintenance mode", or m
 This project differs slightly from other implementations in that the maintenance mode flag is stored in your database versus settings or an environment variable. If your site is deployed to multiple servers, the centralized database-based maintenance flag makes it a snap to bring them all up or down at once.
 
 ## Requirements
-- Django 1.8 or below
+- [django](https://www.djangoproject.com/download/)
 - [django.contrib.sites](https://docs.djangoproject.com/en/1.8/ref/contrib/sites/)
 
 ## Pre-Requisites
 You must have at least one Site entry in your database **before** installing django-maintenancemode-2.
 
 ## Supported Django Versions
-- django-maintenancemode-2 should work as expected on Django 1.8 or below.
-- 1.9 compatibility has not yet been tested.
+- 1.9
+- 1.8
+- 1.7
+- 1.6
+- 1.5 or below *should* work, but proceed with caution
 
 ## Installation
 1. `pip install django-maintenancemode-2`

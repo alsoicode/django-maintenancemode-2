@@ -11,10 +11,13 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+import django
 import os
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DJANGO_MAJOR_VERSION = django.VERSION[0]
+DJANGO_MINOR_VERSION = django.VERSION[1]
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
@@ -50,34 +53,62 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
-    # Commented out for Travis CI testing. Otherwise applicable
-    # for Django 1.8+
-    # 'django.middleware.security.SecurityMiddleware',
-
-    'maintenancemode.middleware.MaintenanceModeMiddleware',
 )
 
-ROOT_URLCONF = 'testproject.urls'
+TEMPLATE_DIRECTORY = os.path.join(BASE_DIR, 'templates')
 
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
-    },
-]
+if DJANGO_MAJOR_VERSION >= 1:
+
+    # Templates
+    if DJANGO_MINOR_VERSION < 8:
+        TEMPLATE_DIRS = (
+            TEMPLATE_DIRECTORY,
+        )
+
+        TEMPLATE_LOADERS = (
+            'django.template.loaders.filesystem.Loader',
+            'django.template.loaders.app_directories.Loader',
+        )
+
+        TEMPLATE_CONTEXT_PROCESSORS = (
+            'django.contrib.auth.context_processors.auth',
+            'django.core.context_processors.i18n',
+            'django.core.context_processors.request',
+            'django.core.context_processors.media',
+            'django.core.context_processors.static',
+            'django.contrib.messages.context_processors.messages',
+        )
+    else:
+        TEMPLATES = [
+            {
+                'BACKEND': 'django.template.backends.django.DjangoTemplates',
+                'DIRS': [TEMPLATE_DIRECTORY],
+                'APP_DIRS': True,
+                'OPTIONS': {
+                    'context_processors': [
+                        'django.template.context_processors.debug',
+                        'django.template.context_processors.request',
+                        'django.contrib.auth.context_processors.auth',
+                        'django.contrib.messages.context_processors.messages',
+                    ],
+                },
+            },
+        ]
+
+    # Sessions
+    if DJANGO_MINOR_VERSION == 6:
+        MIDDLEWARE_CLASSES += ('django.contrib.sessions.middleware.SessionMiddleware',)
+    elif DJANGO_MINOR_VERSION == 7:
+        MIDDLEWARE_CLASSES += ('django.contrib.auth.middleware.SessionAuthenticationMiddleware',)
+    else:
+        MIDDLEWARE_CLASSES += ('django.middleware.security.SecurityMiddleware',)
+
+MIDDLEWARE_CLASSES += ('maintenancemode.middleware.MaintenanceModeMiddleware',)
+
+
+ROOT_URLCONF = 'testproject.urls'
 
 WSGI_APPLICATION = 'testproject.wsgi.application'
 

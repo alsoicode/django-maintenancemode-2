@@ -1,5 +1,10 @@
 from inspect import getmembers
+
+from django import VERSION as DJANGO_VERSION
 from django.conf import settings
+
+DJANGO_MAJOR_VERSION = DJANGO_VERSION[0]
+DJANGO_MINOR_VERSION = DJANGO_VERSION[1]
 
 
 class AppSettings(object):

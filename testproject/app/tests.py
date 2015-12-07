@@ -11,6 +11,7 @@ from django.template import TemplateDoesNotExist
 
 from maintenancemode import middleware as mw
 from maintenancemode.models import Maintenance, IgnoredURL
+from maintenancemode.utils.settings import DJANGO_MINOR_VERSION
 
 from .urls import urlpatterns
 
@@ -75,27 +76,33 @@ class MaintenanceModeMiddlewareTestCase(TestCase):
         Enabling the middleware without a proper 503 template should raise a
         template error
         """
-
-        templates_override = [
-            {
-                'BACKEND': 'django.template.backends.django.DjangoTemplates',
-                'DIRS': [],
-                'APP_DIRS': True,
-                'OPTIONS': {
-                    'context_processors': [
-                        'django.template.context_processors.debug',
-                        'django.template.context_processors.request',
-                        'django.contrib.auth.context_processors.auth',
-                        'django.contrib.messages.context_processors.messages',
-                    ],
+        if DJANGO_MINOR_VERSION > 7:
+            templates_override = [
+                {
+                    'BACKEND': 'django.template.backends.django.DjangoTemplates',
+                    'DIRS': [],
+                    'APP_DIRS': True,
+                    'OPTIONS': {
+                        'context_processors': [
+                            'django.template.context_processors.debug',
+                            'django.template.context_processors.request',
+                            'django.contrib.auth.context_processors.auth',
+                            'django.contrib.messages.context_processors.messages',
+                        ],
+                    },
                 },
-            },
-        ]
+            ]
 
-        with self.settings(TEMPLATES=templates_override):
-            mw.MAINTENANCE_MODE = True
+            with self.settings(TEMPLATES=templates_override):
+                mw.MAINTENANCE_MODE = True
 
-            self.assertRaises(TemplateDoesNotExist, self.client.get, self.home_url)
+                self.assertRaises(TemplateDoesNotExist, self.client.get, self.home_url)
+
+        else:
+            with self.settings(TEMPLATE_DIRS=()):
+                mw.MAINTENANCE_MODE = True
+
+                self.assertRaises(TemplateDoesNotExist, self.client.get, self.home_url)
 
     def test_enabled_middleware_with_template(self):
         """

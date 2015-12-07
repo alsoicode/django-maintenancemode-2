@@ -7,6 +7,7 @@ from django.db.utils import DatabaseError
 import django.conf.urls as urls
 
 from maintenancemode.models import Maintenance, IgnoredURL
+from maintenancemode.utils.settings import DJANGO_MINOR_VERSION
 
 urls.handler503 = 'maintenancemode.views.defaults.temporary_unavailable'
 urls.__all__.append('handler503')
@@ -53,5 +54,9 @@ class MaintenanceModeMiddleware(object):
         # Otherwise show the user the 503 page
         resolver = urlresolvers.get_resolver(None)
 
-        callback, param_dict = resolver.resolve_error_handler('503')
+        if DJANGO_MINOR_VERSION < 8:
+            callback, param_dict = resolver._resolve_special('503')
+        else:
+            callback, param_dict = resolver.resolve_error_handler('503')
+
         return callback(request, **param_dict)
