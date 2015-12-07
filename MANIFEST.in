@@ -1,0 +1,9 @@
+include AUTHORS
+include CHANGES
+include LICENSE
+include README.md
+recursive-include maintenancemode/conf *
+recursive-include maintenancemode/south_migrations *
+recursive-include maintenancemode/utils *
+recursive-include maintenancemode/views *
+prune testproject
