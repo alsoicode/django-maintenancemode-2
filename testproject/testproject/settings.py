@@ -53,7 +53,10 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
+
+    # Commented out for Travis CI testing. Otherwise applicable
+    # for Django 1.8+
+    # 'django.middleware.security.SecurityMiddleware',
 
     'maintenancemode.middleware.MaintenanceModeMiddleware',
 )
