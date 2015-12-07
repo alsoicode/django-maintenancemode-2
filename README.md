@@ -22,7 +22,7 @@ You must have at least one Site entry in your database **before** installing dja
 
 -- or --
 
-1. Download django-maintenancemode-2 from [source]()
+1. Download django-maintenancemode-2 from [source](https://github.com/alsoicode/django-maintenancemode-2/archive/master.zip)
 2. *optional: Enable a virtualenv
 3. Run `python setup.py install` or add `maintenancemode` to your PYTHONPATH
 
