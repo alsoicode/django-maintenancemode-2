@@ -20,7 +20,7 @@ You must have at least one Site entry in your database **before** installing dja
 - 1.8
 - 1.7
 - 1.6
-- 1.5 or below *should* work, but proceed with caution
+- 1.5 or below *should* work, but come on, it's time to upgrade :)
 
 ## Installation
 1. `pip install django-maintenancemode-2`
@@ -39,6 +39,9 @@ You must have at least one Site entry in your database **before** installing dja
 - Run your project to automatically add the maintenancemode database records.
 
 ## Usage
+
+![Image of django-maintenancemode-2](https://res.cloudinary.com/alsoicode/image/upload/v1449536018/django-maintenancemode-2/maintenancemode.jpg)
+
 To put a site into "Maintenance Mode", just check the "In Maintenance Mode" checkbox and save. The next time you visit the public side of the site it will return a 503 if:
 
 - You are not a superuser / staff
@@ -49,9 +52,22 @@ Maintenance mode will create a database record per site in the Sites app. This a
 
 Patterns to ignore are registered as an inline model for each maintenance record. Patterns are defined exactly the same way you write Django URLs normally.
 
-## Testing
-A test application is included "testproject" which also contains tests you can run via `python manage.py test` from the `testproject` directory.
+## Testing and Sample Application
+A "testproject" application is included which also contains unit and functional tests you can run via `python manage.py test` from the `testproject` directory.
 
+The admin username/password is: admin
 
-## Database migrations
+There are only two views in the testproject:
+- /
+- ignored-page
+
+To see `maintenancemode` in action, log into Django admin, and set the maintenance mode to true. Log out, then visit the home page and instead, you'll be greeted with the maintenance page.
+
+To have `maintenancemode` ignore the "ignnored-page" view, simply add it's url pattern to the Ignored URLs as:
+
+    /ignored-page
+
+Now you should be able to visit the `/ignored-page` view regardless of the maintenancemode status. This is useful for contact or help pages that you still want people to be able to access while you're working on other parts of the site.
+
+### Database migrations
 Legacy support for South migrations is supported, otherwise `manage.py syncdb` should add the necessary tables.
