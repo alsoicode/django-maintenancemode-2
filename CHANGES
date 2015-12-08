@@ -4,6 +4,10 @@ Changes
 developement
 - - - - - - - - - - - -
 
+1.1.5
+- - - - -
+Simplified admin ignore pattern settings.
+
 1.1.4
 - - - - -
 Fixed logging into Django admin when maintenance mode is enabled.

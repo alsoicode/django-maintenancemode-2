@@ -3,7 +3,7 @@ django-maintenancemode-2
 
 |Build Status|
 
-Current Version: 1.1.4
+Current Version: 1.1.5
 
 This project makes it easy to put your Django site into "maintenance
 mode", or more technically, return an HTTP 503 response.
@@ -64,11 +64,11 @@ Settings and Required Values
 -  Add a 503.html template to the root of your templates directory, or
    optionally add a ``MAINTENANCE_503_TEMPLATE`` path to your 503.html
    file's location in settings.
--  ``maintenancemode`` will ignore the default Django Admin login url:
-   ``/admin/login/`` so you can turn it off. If you use a custom url for
-   admin, you may override the ignored login url by adding the
-   ``MAINTENANCE_ADMIN_IGNORED_URLS`` list in settings. Example:
-   ``['^my-custom-admin/login/$']``
+-  ``maintenancemode`` will ignore any patterns beginning with the
+   default Django Admin url: ``^admin`` so you can turn it off. If you
+   use a custom url for admin, you may override the ignored admin
+   patterns by adding the ``MAINTENANCE_ADMIN_IGNORED_URLS`` list in
+   settings. Example: ``['^my-custom-admin', '^my-other-custom-admin']``
 
 Usage
 -----
