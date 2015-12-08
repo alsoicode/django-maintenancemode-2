@@ -7,7 +7,8 @@ DJANGO_MAJOR_VERSION = DJANGO_VERSION[0]
 DJANGO_MINOR_VERSION = DJANGO_VERSION[1]
 MAINTENANCE_503_TEMPLATE = getattr(settings, 'MAINTENANCE_503_TEMPLATE',
     '503.html')
-
+MAINTENANCE_ADMIN_IGNORED_URLS = getattr(settings, 'MAINTENANCE_ADMIN_IGNORED_URLS',
+    ['^admin/login/$'])
 
 class AppSettings(object):
     """

@@ -3,7 +3,7 @@ django-maintenancemode-2
 
 |Build Status|
 
-Current Version: 1.1.2
+Current Version: 1.1.4
 
 This project makes it easy to put your Django site into "maintenance
 mode", or more technically, return an HTTP 503 response.
@@ -57,12 +57,18 @@ Settings and Required Values
 -  Add ``maintenancemode.middleware.MaintenanceModeMiddleware`` to your
    ``MIDDLEWARE_CLASSES``
 -  Add ``maintenancemode`` to your ``INSTALLED_APPS``
--  Run ``python manage.py syncdb`` to create the maintenancemode tables.
--  Run your project to automatically add the maintenancemode database
-   records.
+-  Run ``python manage.py syncdb`` to create the ``maintenancemode``
+   tables.
+-  Run your project to automatically add the ``maintenancemode``
+   database records.
 -  Add a 503.html template to the root of your templates directory, or
    optionally add a ``MAINTENANCE_503_TEMPLATE`` path to your 503.html
    file's location in settings.
+-  ``maintenancemode`` will ignore the default Django Admin login url:
+   ``/admin/login/`` so you can turn it off. If you use a custom url for
+   admin, you may override the ignored login url by adding the
+   ``MAINTENANCE_ADMIN_IGNORED_URLS`` list in settings. Example:
+   ``['^my-custom-admin/login/$']``
 
 Usage
 -----
@@ -71,6 +77,9 @@ Usage
    :alt: Image of django-maintenancemode-2
 
    Image of django-maintenancemode-2
+
+Turning Maintenance Mode **On**
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To put a site into "Maintenance Mode", just check the "In Maintenance
 Mode" checkbox and save in Django Admin under the "Maintenancemode"
@@ -81,13 +90,14 @@ return a 503 if:
 -  You are not viewing a URL in the ignored patterns list
 -  Your ``REMOTE_ADDR`` does not appear in the ``INTERNAL_IPS`` setting
 
-Maintenance mode will create a database record per site in the Sites
-app. This allows you to bring each domain down independently if your
-project serves multiple domains.
+Turning Maintenance Mode **Off**
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Patterns to ignore are registered as an inline model for each
-maintenance record. Patterns are defined exactly the same way you write
-Django URLs normally.
+By default, ``maintenancemode`` will ignore the default Django Admin
+login url: ``/admin/login/`` or optionally the list you specify via
+``MAINTENANCE_ADMIN_IGNORED_URLS``, which you must access directly in
+order to access Django Admin when maintenance mode is turned on, as
+redirects are disabled.
 
 Testing and Sample Application
 ------------------------------

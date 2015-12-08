@@ -1,3 +1,8 @@
+try:
+    import httplib
+except ImportError:
+    import http.client as httplib
+
 import os.path
 import re
 
@@ -174,3 +179,12 @@ class MaintenanceModeMiddlewareTestCase(TestCase):
 
         response = self.client.get(self.ignored_url)
         self.assertContains(response, text='Ignored', count=1, status_code=200)
+
+    def test_django_admin_accessable(self):
+        """
+        Make sure we can still log into Django admin to turn maintenance mode off
+        """
+
+        self.turn_maintenance_mode_on()
+        response = self.client.get('/admin/login/')
+        self.assertEqual(response.status_code, httplib.OK, 'Unable to reach Django Admin login')

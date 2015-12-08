@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/alsoicode/django-maintenancemode-2.svg)](https://travis-ci.org/alsoicode/django-maintenancemode-2)
 
-Current Version: 1.1.3
+Current Version: 1.1.4
 
 This project makes it easy to put your Django site into "maintenance mode", or more technically, return an HTTP 503 response.
 
@@ -35,23 +35,25 @@ You must have at least one Site entry in your database **before** installing dja
 - Ensure the [Sites Framework](https://docs.djangoproject.com/en/1.8/ref/contrib/sites/) is enabled and that you have at least one entry in the Sites table.
 - Add `maintenancemode.middleware.MaintenanceModeMiddleware` to your `MIDDLEWARE_CLASSES`
 - Add `maintenancemode` to your `INSTALLED_APPS`
-- Run `python manage.py syncdb` to create the maintenancemode tables.
-- Run your project to automatically add the maintenancemode database records.
+- Run `python manage.py syncdb` to create the `maintenancemode` tables.
+- Run your project to automatically add the `maintenancemode` database records.
 - Add a 503.html template to the root of your templates directory, or optionally add a `MAINTENANCE_503_TEMPLATE` path to your 503.html file's location in settings.
+- `maintenancemode` will ignore the default Django Admin login url: `/admin/login/` so you can turn it off. If you use a custom url for admin, you may override the ignored login url by adding the `MAINTENANCE_ADMIN_IGNORED_URLS` list in settings. Example: `['^my-custom-admin/login/$']`
 
 ## Usage
 
 ![Image of django-maintenancemode-2](http://res.cloudinary.com/alsoicode/image/upload/v1449537052/django-maintenancemode-2/maintenancemode.jpg)
 
+### Turning Maintenance Mode **On**
 To put a site into "Maintenance Mode", just check the "In Maintenance Mode" checkbox and save in Django Admin under the "Maintenancemode" section. The next time you visit the public side of the site it will return a 503 if:
 
 - You are not a superuser / staff
 - You are not viewing a URL in the ignored patterns list
 - Your `REMOTE_ADDR` does not appear in the `INTERNAL_IPS` setting
 
-Maintenance mode will create a database record per site in the Sites app. This allows you to bring each domain down independently if your project serves multiple domains.
+### Turning Maintenance Mode **Off**
 
-Patterns to ignore are registered as an inline model for each maintenance record. Patterns are defined exactly the same way you write Django URLs normally.
+By default, `maintenancemode` will ignore the default Django Admin login url: `/admin/login/` or optionally the list you specify via `MAINTENANCE_ADMIN_IGNORED_URLS`, which you must access directly in order to access Django Admin when maintenance mode is turned on, as redirects are disabled.
 
 ## Testing and Sample Application
 A "testproject" application is included which also contains unit and functional tests you can run via `python manage.py test` from the `testproject` directory.

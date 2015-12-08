@@ -7,7 +7,8 @@ from django.db.utils import DatabaseError
 import django.conf.urls as urls
 
 from maintenancemode.models import Maintenance, IgnoredURL
-from maintenancemode.utils.settings import DJANGO_MINOR_VERSION
+from maintenancemode.utils.settings import (
+    DJANGO_MINOR_VERSION, MAINTENANCE_ADMIN_IGNORED_URLS)
 
 urls.handler503 = 'maintenancemode.views.defaults.temporary_unavailable'
 urls.__all__.append('handler503')
@@ -44,10 +45,13 @@ class MaintenanceModeMiddleware(object):
             return None
 
         # Check if a path is explicitly excluded from maintenance mode
-        urls_to_ignore = IgnoredURL.objects.filter(maintenance=maintenance)
-        ignore_urls = tuple([re.compile(r'%s' % str(url.pattern)) for url in urls_to_ignore])
+        ignored_url_list = [str(url.pattern) for url in
+            IgnoredURL.objects.filter(maintenance=maintenance)] + MAINTENANCE_ADMIN_IGNORED_URLS
+
+        ignored_url_patterns = tuple([re.compile(r'%s' % url) for url in ignored_url_list])
         request_path = request.path_info[1:]
-        for url in ignore_urls:
+
+        for url in ignored_url_patterns:
             if url.match(request_path):
                 return None
 

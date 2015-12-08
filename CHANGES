@@ -4,7 +4,12 @@ Changes
 developement
 - - - - - - - - - - - -
 
+1.1.4
+- - - - -
+Fixed logging into Django admin when maintenance mode is enabled.
+
 1.1.3
+- - - - -
 Converstion of README.md to .rst for better compatibility with PyPi
 
 1.1.2
