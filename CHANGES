@@ -4,6 +4,18 @@ Changes
 developement
 - - - - - - - - - - - -
 
+1.1.3
+Converstion of README.md to .rst for better compatibility with PyPi
+
+1.1.2
+- - - - -
+- Documentation updates.
+- Added setting for 503.html template path
+
+1.1.1
+- - - - -
+- Deleted
+
 1.1.0
 - - - - -
 - Updated testproject
