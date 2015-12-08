@@ -40,7 +40,7 @@ You must have at least one Site entry in your database **before** installing dja
 
 ## Usage
 
-![Image of django-maintenancemode-2](https://res.cloudinary.com/alsoicode/image/upload/v1449536018/django-maintenancemode-2/maintenancemode.jpg)
+![Image of django-maintenancemode-2](http://res.cloudinary.com/alsoicode/image/upload/v1449537052/django-maintenancemode-2/maintenancemode.jpg)
 
 To put a site into "Maintenance Mode", just check the "In Maintenance Mode" checkbox and save. The next time you visit the public side of the site it will return a 503 if:
 
