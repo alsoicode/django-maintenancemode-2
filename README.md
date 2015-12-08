@@ -37,7 +37,7 @@ You must have at least one Site entry in your database **before** installing dja
 - Add `maintenancemode` to your `INSTALLED_APPS`
 - Run `python manage.py syncdb` to create the maintenancemode tables.
 - Run your project to automatically add the maintenancemode database records.
-- Add a 503.html template at the root of your project, or optionally add a `MAINTENANCE_503_TEMPLATE` path to your 503.html file's location in your settings.
+- Add a 503.html template to the root of your templates directory, or optionally add a `MAINTENANCE_503_TEMPLATE` path to your 503.html file's location in settings.
 
 ## Usage
 
