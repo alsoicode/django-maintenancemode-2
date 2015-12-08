@@ -17,6 +17,9 @@ import os
 DJANGO_MAJOR_VERSION = django.VERSION[0]
 DJANGO_MINOR_VERSION = django.VERSION[1]
 
+# Optionally, specify a custom 503 template path
+# MAINTENANCE_503_TEMPLATE = 'errors/503.html'
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production

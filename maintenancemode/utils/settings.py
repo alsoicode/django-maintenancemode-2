@@ -5,6 +5,8 @@ from django.conf import settings
 
 DJANGO_MAJOR_VERSION = DJANGO_VERSION[0]
 DJANGO_MINOR_VERSION = DJANGO_VERSION[1]
+MAINTENANCE_503_TEMPLATE = getattr(settings, 'MAINTENANCE_503_TEMPLATE',
+    '503.html')
 
 
 class AppSettings(object):

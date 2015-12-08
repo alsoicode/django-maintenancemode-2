@@ -37,12 +37,13 @@ You must have at least one Site entry in your database **before** installing dja
 - Add `maintenancemode` to your `INSTALLED_APPS`
 - Run `python manage.py syncdb` to create the maintenancemode tables.
 - Run your project to automatically add the maintenancemode database records.
+- Add a 503.html template at the root of your project, or optionally add a `MAINTENANCE_503_TEMPLATE` path to your 503.html file's location in your settings.
 
 ## Usage
 
 ![Image of django-maintenancemode-2](http://res.cloudinary.com/alsoicode/image/upload/v1449537052/django-maintenancemode-2/maintenancemode.jpg)
 
-To put a site into "Maintenance Mode", just check the "In Maintenance Mode" checkbox and save. The next time you visit the public side of the site it will return a 503 if:
+To put a site into "Maintenance Mode", just check the "In Maintenance Mode" checkbox and save in Django Admin under the "Maintenancemode" section. The next time you visit the public side of the site it will return a 503 if:
 
 - You are not a superuser / staff
 - You are not viewing a URL in the ignored patterns list
