@@ -52,25 +52,24 @@ To put a site into "Maintenance Mode", just check the "In Maintenance Mode" chec
 - Your `REMOTE_ADDR` does not appear in the `INTERNAL_IPS` setting
 
 ### Turning Maintenance Mode **Off**
-
-By default, `maintenancemode` will ignore the default Django Admin login url: `/admin/login/` or optionally the list you specify via `MAINTENANCE_ADMIN_IGNORED_URLS`, which you must access directly in order to access Django Admin when maintenance mode is turned on, as redirects are disabled.
+Just log in, un-check the "In Maintenance Mode" checkbox and save.
 
 ## Testing and Sample Application
 A "testproject" application is included which also contains unit and functional tests you can run via `python manage.py test` from the `testproject` directory.
 
-The admin username/password is: admin
+You will need to run `manage.py syncdb` to create the test project database.
 
 There are only two views in the testproject:
 - /
-- ignored-page
+- /ignored-page
 
 To see `maintenancemode` in action, log into Django admin, and set the maintenance mode to true. Log out, then visit the home page and instead, you'll be greeted with the maintenance page.
 
-To have `maintenancemode` ignore the "ignnored-page" view, simply add it's url pattern to the Ignored URLs as:
+To have `maintenancemode` ignore the "ignored-page" view, simply add it's url pattern to the Ignored URLs as:
 
-    /ignored-page
+    ^ignored-page/$
 
-Now you should be able to visit the `/ignored-page` view regardless of the maintenancemode status. This is useful for contact or help pages that you still want people to be able to access while you're working on other parts of the site.
+Now you should be able to visit the `ignored-page` view regardless of the maintenancemode status. This is useful for contact or help pages that you still want people to be able to access while you're working on other parts of the site.
 
 ### Database migrations
 Legacy support for South migrations is supported, otherwise `manage.py syncdb` should add the necessary tables.
