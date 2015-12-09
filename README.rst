@@ -86,7 +86,7 @@ Mode" checkbox and save in Django Admin under the "Maintenancemode"
 section. The next time you visit the public side of the site it will
 return a 503 if:
 
--  You are not a superuser / staff
+-  You are not logged in as a superuser or staff user
 -  You are not viewing a URL in the ignored patterns list
 -  Your ``REMOTE_ADDR`` does not appear in the ``INTERNAL_IPS`` setting
 
