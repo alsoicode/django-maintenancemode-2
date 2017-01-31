@@ -10,6 +10,4 @@ def temporary_unavailable(request, template_name=MAINTENANCE_503_TEMPLATE):
     table, redirects if found, and displays 404 page if not redirected.
 
     """
-    return HttpResponseTemporaryUnavailable(loader.render_to_string(template_name, {
-        'request_path': request.path,
-    }, RequestContext(request)))
+    return HttpResponseTemporaryUnavailable(loader.render_to_string(template_name, {'request_path': request.path,}))
