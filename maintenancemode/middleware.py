@@ -1,5 +1,7 @@
 import re
 
+from django import VERSION as DJANGO_VERSION
+from django.utils import deprecation
 from django.conf import settings
 from django.contrib.sites.models import Site
 from django.core import urlresolvers
@@ -14,7 +16,7 @@ urls.handler503 = 'maintenancemode.views.defaults.temporary_unavailable'
 urls.__all__.append('handler503')
 
 
-class MaintenanceModeMiddleware(object):
+class MaintenanceModeMiddleware(deprecation.MiddlewareMixin if DJANGO_VERSION >= (1, 10, 0) else object):
     def process_request(self, request):
         """
         Get the maintenance mode from the database.
