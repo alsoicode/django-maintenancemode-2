@@ -27,6 +27,10 @@ matrix:
             python: "3.5"
             env: DJANGO_VERSION=1.6.7 TESTPROJECT=testproject
 
+        -
+            python: "3.5"
+            env: DJANGO_VERSION=1.7.7 TESTPROJECT=testproject
+
 install:
     - pip install django==$DJANGO_VERSION
 
