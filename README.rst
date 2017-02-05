@@ -3,7 +3,7 @@ django-maintenancemode-2
 
 |Build Status|
 
-Current Version: 1.1.5
+Current Version: 1.1.6
 
 This project makes it easy to put your Django site into "maintenance
 mode", or more technically, return an HTTP 503 response.
@@ -29,6 +29,7 @@ installing django-maintenancemode-2.
 Supported Django Versions
 -------------------------
 
+-  1.10
 -  1.9
 -  1.8
 -  1.7
