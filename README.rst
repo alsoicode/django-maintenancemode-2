@@ -3,7 +3,7 @@ django-maintenancemode-2
 
 |Build Status|
 
-Current Version: 1.1.6
+Current Version: 1.1.7
 
 This project makes it easy to put your Django site into "maintenance
 mode", or more technically, return an HTTP 503 response.
@@ -91,10 +91,30 @@ return a 503 if:
 -  You are not viewing a URL in the ignored patterns list
 -  Your ``REMOTE_ADDR`` does not appear in the ``INTERNAL_IPS`` setting
 
+Or you can alternatively use the `setmaintenance` management command::
+
+    # sets maintenance on for the current settings.SITE_ID 
+    ./manage.py setmaintenance on 
+
+    # sets maintenance on for sites 2 and 3 
+    ./manage.py setmaintenance on 2 3
+
+which can be useful for `fabric` deployment scripts etc.
+
+
 Turning Maintenance Mode **Off**
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Just log in, un-check the "In Maintenance Mode" checkbox and save.
+
+Or you can alternatively use the `setmaintenance` management command::
+
+    # sets maintenance off for the current settings.SITE_ID 
+    $ ./manage.py setmaintenance off 
+
+    # sets maintenance off for sites 2 and 3 
+    $ ./manage.py setmaintenance off 2 3
+
 
 Testing and Sample Application
 ------------------------------
