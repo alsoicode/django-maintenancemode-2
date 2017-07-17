@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/alsoicode/django-maintenancemode-2.svg)](https://travis-ci.org/alsoicode/django-maintenancemode-2)
 
-Current Version: 1.1.6
+Current Version: 1.1.7
 
 This project makes it easy to put your Django site into "maintenance mode", or more technically, return an HTTP 503 response.
 
@@ -52,8 +52,31 @@ To put a site into "Maintenance Mode", just check the "In Maintenance Mode" chec
 - You are not viewing a URL in the ignored patterns list
 - Your `REMOTE_ADDR` does not appear in the `INTERNAL_IPS` setting
 
+
+Or you can alternatively use the `setmaintenance` management command:
+
+```
+    # sets maintenance on for the current settings.SITE_ID 
+    ./manage.py setmaintenance on 
+
+    # sets maintenance on for sites 2 and 3 
+    ./manage.py setmaintenance on 2 3
+```
+
+which can be useful for `fabric` deployment scripts etc.
+
 ### Turning Maintenance Mode **Off**
 Just log in, un-check the "In Maintenance Mode" checkbox and save.
+
+Or you can alternatively use the `setmaintenance` management command:
+
+```
+    # sets maintenance off for the current settings.SITE_ID 
+    $ ./manage.py setmaintenance off 
+
+    # sets maintenance off for sites 2 and 3 
+    $ ./manage.py setmaintenance off 2 3
+```
 
 ## Testing and Sample Application
 A "testproject" application is included which also contains unit and functional tests you can run via `python manage.py test` from the `testproject` directory.
