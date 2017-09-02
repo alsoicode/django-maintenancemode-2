@@ -5,10 +5,13 @@ from django.conf import settings
 
 DJANGO_MAJOR_VERSION = DJANGO_VERSION[0]
 DJANGO_MINOR_VERSION = DJANGO_VERSION[1]
-MAINTENANCE_503_TEMPLATE = getattr(settings, 'MAINTENANCE_503_TEMPLATE',
-    '503.html')
-MAINTENANCE_ADMIN_IGNORED_URLS = getattr(settings, 'MAINTENANCE_ADMIN_IGNORED_URLS',
-    ['^admin'])
+MAINTENANCE_503_TEMPLATE = getattr(settings,
+                                   'MAINTENANCE_503_TEMPLATE',
+                                   '503.html')
+MAINTENANCE_ADMIN_IGNORED_URLS = getattr(settings,
+                                         'MAINTENANCE_ADMIN_IGNORED_URLS',
+                                         ['^admin'])
+
 
 class AppSettings(object):
     """
@@ -91,8 +94,11 @@ class AppSettings(object):
 
     def __getattr__(self, name):
         if name.startswith(self._prefix):
-            raise AttributeError("%r object has no attribute %r" %
-                                 (self.__class__.__name__, name))
+            raise AttributeError(
+                "{0} object has no attribute {1}".format(
+                    (self.__class__.__name__, name)
+                )
+            )
         return getattr(settings, name)
 
     def __setattr__(self, name, value):
@@ -104,9 +110,9 @@ class AppSettings(object):
         super(AppSettings, self).__setattr__('_prefix', prefix)
         for setting, class_value in getmembers(self.__class__):
             if setting == setting.upper():
-                prefixed = "%s_%s" % (prefix.upper(), setting.upper())
+                prefixed = "{0}_{1}".format(prefix.upper(), setting.upper())
                 configured_value = getattr(settings, prefixed, class_value)
-                callback_name = "configure_%s" % setting.lower()
+                callback_name = "configure_{}".format(setting.lower())
                 callback = getattr(self, callback_name, None)
                 if callable(callback):
                     configured_value = callback(configured_value)
