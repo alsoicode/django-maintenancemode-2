@@ -101,12 +101,14 @@ if DJANGO_MAJOR_VERSION >= 1:
         ]
 
     # Sessions
-    if DJANGO_MINOR_VERSION == 6:
-        MIDDLEWARE_CLASSES += ('django.contrib.sessions.middleware.SessionMiddleware',)
-    elif DJANGO_MINOR_VERSION == 7:
-        MIDDLEWARE_CLASSES += ('django.contrib.auth.middleware.SessionAuthenticationMiddleware',)
+    if DJANGO_MINOR_VERSION == 7:
+        MIDDLEWARE_CLASSES += (
+            'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+        )
     else:
-        MIDDLEWARE_CLASSES += ('django.middleware.security.SecurityMiddleware',)
+        MIDDLEWARE_CLASSES += (
+            'django.middleware.security.SecurityMiddleware',
+        )
 
 MIDDLEWARE_CLASSES += ('maintenancemode.middleware.MaintenanceModeMiddleware',)
 

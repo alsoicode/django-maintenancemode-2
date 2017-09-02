@@ -4,6 +4,14 @@ from . import views
 
 
 urlpatterns = [
-    url(r'^ignored-page/$', views.ignored, name='ignored'),
-    url(r'^$', views.home, name='home'),
+    url(
+        regex=r'^ignored-page/$',
+        view=views.IgnoredView.as_view(),
+        name='ignored'
+    ),
+    url(
+        regex=r'^$',
+        view=views.HomeView.as_view(),
+        name='home'
+    ),
 ]

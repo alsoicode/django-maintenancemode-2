@@ -20,10 +20,12 @@ class MaintenanceModeMiddleware(deprecation.MiddlewareMixin if DJANGO_VERSION >=
     def process_request(self, request):
         """
         Get the maintenance mode from the database.
-        If a Maintenance value doesn't already exist in the database, we'll create one.
-        "has_add_permission" and "has_delete_permission" are overridden in admin
-        to prevent the user from adding or deleting a record, as we only need one
-        to affect multiple sites managed from one instance of Django admin.
+        If a Maintenance value doesn't already exist in the database,
+        we'll create one.
+        "has_add_permission" and "has_delete_permission" are overridden
+        in admin to prevent the user from adding or deleting a record,
+        as we only need one to affect multiple sites managed from one
+        instance of Django admin.
         """
         site = Site.objects.get_current()
 
@@ -31,7 +33,9 @@ class MaintenanceModeMiddleware(deprecation.MiddlewareMixin if DJANGO_VERSION >=
             maintenance = Maintenance.objects.get(site=site)
         except (Maintenance.DoesNotExist, DatabaseError):
             for site in Site.objects.all():
-                maintenance = Maintenance.objects.create(site=site, is_being_performed=False)
+                maintenance = Maintenance.objects.create(
+                    site=site, is_being_performed=False
+                )
 
         # Allow access if maintenance is not being performed
         if not maintenance.is_being_performed:
@@ -47,10 +51,14 @@ class MaintenanceModeMiddleware(deprecation.MiddlewareMixin if DJANGO_VERSION >=
             return None
 
         # Check if a path is explicitly excluded from maintenance mode
-        ignored_url_list = [str(url.pattern) for url in
-            IgnoredURL.objects.filter(maintenance=maintenance)] + MAINTENANCE_ADMIN_IGNORED_URLS
+        ignored_url_list = [
+            str(url.pattern) for url in
+            IgnoredURL.objects.filter(maintenance=maintenance)
+        ] + MAINTENANCE_ADMIN_IGNORED_URLS
 
-        ignored_url_patterns = tuple([re.compile(r'%s' % url) for url in ignored_url_list])
+        ignored_url_patterns = tuple(
+            [re.compile(r'{}'.format(url)) for url in ignored_url_list]
+        )
         request_path = request.path_info[1:]
 
         for url in ignored_url_patterns:
