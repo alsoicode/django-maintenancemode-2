@@ -98,7 +98,7 @@ class Command(BaseCommand):
                     )
                     continue
 
-            m = Maintenance.objects.get_or_create(site_id=site_id)
+            m, created = Maintenance.objects.get_or_create(site_id=site_id)
 
             if m.is_being_performed == status:
                 if options["verbosity"] >= 1:
