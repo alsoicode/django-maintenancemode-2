@@ -1,10 +1,10 @@
 from inspect import getmembers
 
-from django import VERSION as DJANGO_VERSION
+from django import get_version
 from django.conf import settings
 
-DJANGO_MAJOR_VERSION = DJANGO_VERSION[0]
-DJANGO_MINOR_VERSION = DJANGO_VERSION[1]
+from distutils.version import StrictVersion
+DJANGO_VERSION = StrictVersion(get_version())
 MAINTENANCE_503_TEMPLATE = getattr(settings,
                                    'MAINTENANCE_503_TEMPLATE',
                                    '503.html')

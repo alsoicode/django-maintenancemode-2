@@ -9,7 +9,7 @@ from django.contrib.sites.models import Site
 
 @python_2_unicode_compatible
 class Maintenance(models.Model):
-    site = models.OneToOneField(Site)
+    site = models.OneToOneField(Site, on_delete=models.CASCADE)
     is_being_performed = models.BooleanField(
         _('In Maintenance Mode'), default=False
     )
@@ -24,12 +24,12 @@ class Maintenance(models.Model):
         qs = self.ignoredurl_set.values_list(
             "pattern", flat=True
             )
-        return map(str, qs)
+        return list(qs)
 
 
 @python_2_unicode_compatible
 class IgnoredURL(models.Model):
-    maintenance = models.ForeignKey(Maintenance)
+    maintenance = models.ForeignKey(Maintenance, on_delete=models.CASCADE)
     pattern = models.CharField(max_length=255)
     description = models.CharField(
         max_length=75, help_text=_('What this URL pattern covers.')
@@ -40,8 +40,8 @@ class IgnoredURL(models.Model):
 
 
 def populate():
-    """ 
-    creates Maintenance objects for all sites (if necessary) 
+    """
+    creates Maintenance objects for all sites (if necessary)
     """
     for site in Site.objects.all():
         try:
@@ -49,4 +49,4 @@ def populate():
         except IntegrityError as e:
             # MySQL can be a bit annoying sometimes
             pass
-            
+
