@@ -19,7 +19,7 @@ You must have at least one Site entry in your database **before** installing dja
 - 2.7, 3.6
 
 ## Supported Django Versions
-- 1.7, 1.8, 1.9, 1.10, 1.11
+- 1.8, 1.9, 1.10, 1.11, 2.0
 
 ## Installation
 1. `pip install django-maintenancemode-2`
