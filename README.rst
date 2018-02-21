@@ -68,6 +68,8 @@ Settings and Required Values
    use a custom url for admin, you may override the ignored admin
    patterns by adding the ``MAINTENANCE_ADMIN_IGNORED_URLS`` list in
    settings. Example: ``['^my-custom-admin', '^my-other-custom-admin']``
+-  You can also block all staff users, who by defualt are ignored
+   by the maintenance mode, by setting ``MAINTENANCE_BLOCK_STAFF``to True
 
 Usage
 -----
