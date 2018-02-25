@@ -11,6 +11,7 @@ MAINTENANCE_503_TEMPLATE = getattr(settings,
 MAINTENANCE_ADMIN_IGNORED_URLS = getattr(settings,
                                          'MAINTENANCE_ADMIN_IGNORED_URLS',
                                          ['^admin'])
+MAINTENANCE_BLOCK_STAFF = getattr(settings, 'MAINTENANCE_BLOCK_STAFF', False)
 
 
 class AppSettings(object):
