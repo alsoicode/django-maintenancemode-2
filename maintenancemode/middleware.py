@@ -33,6 +33,7 @@ class MaintenanceModeMiddleware(_base):
         if hasattr(request, 'user'):
             if request.user.is_superuser:
                 return None
+
             if not MAINTENANCE_BLOCK_STAFF and request.user.is_staff:
                 return None
 
@@ -49,10 +50,14 @@ class MaintenanceModeMiddleware(_base):
             return None
 
         # Check if a path is explicitly excluded from maintenance mode
-        ignored_url_list = set(maintenance.ignored_url_patterns() + MAINTENANCE_ADMIN_IGNORED_URLS)
+        ignored_url_list = set(
+            maintenance.ignored_url_patterns() + MAINTENANCE_ADMIN_IGNORED_URLS
+        )
+
         ignored_url_patterns = tuple(
             re.compile(r'{}'.format(url)) for url in ignored_url_list
         )
+
         request_path = request.path_info.lstrip("/")
 
         for url in ignored_url_patterns:

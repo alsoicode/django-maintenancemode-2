@@ -3,10 +3,10 @@ django-maintenancemode-2
 
 |Build Status|
 
-Current Version: 1.1.9
+Current Version: 1.1.10
 
-This project makes it easy to put your Django site into "maintenance
-mode", or more technically, return an HTTP 503 response.
+This project makes it easy to put your Django site into “maintenance
+mode”, or more technically, return an HTTP 503 response.
 
 This project differs slightly from other implementations in that the
 maintenance mode flag is stored in your database versus settings or an
@@ -34,14 +34,17 @@ Supported Python Versions
 Supported Django Versions
 -------------------------
 
--  1.8, 1.9, 1.10, 1.11, 2.0
+-  1.7.x or higher
+
+For Django 2.x or higher, use django-maintenancemode-2 1.1.10 or higher
+For Django 1.x, use 1.1.9
 
 Installation
 ------------
 
 1. ``pip install django-maintenancemode-2``
 
--- or --
+– or –
 
 1. Download django-maintenancemode-2 from
    `source <https://github.com/alsoicode/django-maintenancemode-2/archive/master.zip>`__
@@ -60,16 +63,18 @@ Settings and Required Values
 -  Add ``maintenancemode`` to your ``INSTALLED_APPS``
 -  Run ``python manage.py migrate`` to create the ``maintenancemode``
    tables.
+-  Run your project to automatically add the ``maintenancemode``
+   database records.
 -  Add a 503.html template to the root of your templates directory, or
    optionally add a ``MAINTENANCE_503_TEMPLATE`` path to your 503.html
-   file's location in settings.
+   file’s location in settings.
 -  ``maintenancemode`` will ignore any patterns beginning with the
    default Django Admin url: ``^admin`` so you can turn it off. If you
    use a custom url for admin, you may override the ignored admin
    patterns by adding the ``MAINTENANCE_ADMIN_IGNORED_URLS`` list in
    settings. Example: ``['^my-custom-admin', '^my-other-custom-admin']``
--  You can also block all staff users, who by defualt are ignored
-   by the maintenance mode, by setting ``MAINTENANCE_BLOCK_STAFF``to True
+-  You can also block staff users, who by default are ignored by
+   maintenance mode, by setting ``MAINTENANCE_BLOCK_STAFF`` to ``True``
 
 Usage
 -----
@@ -82,43 +87,46 @@ Usage
 Turning Maintenance Mode **On**
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To put a site into "Maintenance Mode", check the "In Maintenance Mode"
-checkbox and save in Django Admin under the "Maintenancemode" section.
-The next time you visit the public side of the site, it will return a 503 if:
+To put a site into “Maintenance Mode”, check the “In Maintenance Mode”
+checkbox and save in Django Admin under the “Maintenancemode” section.
+The next time you visit the public side of the site, it will return a
+503 if:
 
 -  You are not logged in as a superuser or staff user
 -  You are not viewing a URL in the ignored patterns list
 -  Your ``REMOTE_ADDR`` does not appear in the ``INTERNAL_IPS`` setting
 
-Or you can alternatively use the `setmaintenance` management command::
+Or you can alternatively use the ``setmaintenance`` management command:
 
-    # sets maintenance on for the current settings.SITE_ID
-    ./manage.py setmaintenance on
+::
 
-    # sets maintenance on for sites 2 and 3
-    ./manage.py setmaintenance on 2 3
+        # sets maintenance on for the current settings.SITE_ID
+        ./manage.py setmaintenance on
 
-which can be useful for `fabric` deployment scripts etc.
+        # sets maintenance on for sites 2 and 3
+        ./manage.py setmaintenance on 2 3
 
+which can be useful for ``fabric`` deployment scripts etc.
 
 Turning Maintenance Mode **Off**
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Log in, un-check the "In Maintenance Mode" checkbox and save.
+Log in, un-check the “In Maintenance Mode” checkbox and save.
 
-Or you can alternatively use the `setmaintenance` management command::
+Or you can alternatively use the ``setmaintenance`` management command:
 
-    # sets maintenance off for the current settings.SITE_ID
-    $ ./manage.py setmaintenance off
+::
 
-    # sets maintenance off for sites 2 and 3
-    $ ./manage.py setmaintenance off 2 3
+        # sets maintenance off for the current settings.SITE_ID
+        $ ./manage.py setmaintenance off
 
+        # sets maintenance off for sites 2 and 3
+        $ ./manage.py setmaintenance off 2 3
 
 Testing and Sample Application
 ------------------------------
 
-A "testproject" application is included, which also contains unit and
+A “testproject” application is included, which also contains unit and
 functional tests you can run via ``python manage.py test`` from the
 ``testproject`` directory.
 
@@ -128,20 +136,20 @@ database.
 There are only two views in the testproject: - / - /ignored-page
 
 To see ``maintenancemode`` in action, log into Django admin, and set the
-maintenance mode to true. Log out, then visit the home page, and instead,
-you'll be greeted with the maintenance page.
+maintenance mode to true. Log out, then visit the home page, and
+instead, you’ll be greeted with the maintenance page.
 
-To have ``maintenancemode`` ignore the "ignored-page" view, simply add
-it's url pattern to the Ignored URLs as:
+To have ``maintenancemode`` ignore the “ignored-page” view, simply add
+it’s url pattern to the Ignored URLs as:
 
 ::
 
     ^ignored-page/$
 
-Now you should be able to visit the ``ignored-page`` view, regardless of
-the maintenancemode status. This is useful for contact or help pages
-you still want people to be able to access while you're working on
-other parts of the site.
+Now you should be able to visit the ``ignored-page`` view regardless of
+the maintenancemode status. This is useful for contact or help pages you
+still want people to be able to access while you’re working on other
+parts of the site.
 
 Database migrations
 ~~~~~~~~~~~~~~~~~~~
