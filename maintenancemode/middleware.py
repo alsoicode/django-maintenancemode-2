@@ -29,11 +29,12 @@ class MaintenanceModeMiddleware(_base):
         if request.META.get('REMOTE_ADDR') in settings.INTERNAL_IPS:
             return None
 
-        # Allow access if the user doing the request is logged in and a
-        # staff member.
-        if (not MAINTENANCE_BLOCK_STAFF and hasattr(request, 'user') and
-                request.user.is_staff):
-            return None
+        # Check if the staff the user is allowed
+        if hasattr(request, 'user'):
+            if request.user.is_superuser:
+                return None
+            if not MAINTENANCE_BLOCK_STAFF and request.user.is_staff:
+                return None
 
         # ok let's look at the db
         site = Site.objects.get_current()
