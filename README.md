@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/alsoicode/django-maintenancemode-2.svg)](https://travis-ci.org/alsoicode/django-maintenancemode-2)
 
-Current Version: 1.1.11
+Current Version: 1.2
 
 This project makes it easy to put your Django site into "maintenance mode", or more technically, return an HTTP 503 response.
 
@@ -16,13 +16,12 @@ This project differs slightly from other implementations in that the maintenance
 You must have at least one Site entry in your database **before** installing django-maintenancemode-2.
 
 ## Supported Python Versions
-- 2.7, 3.6
+- 2.7, 3.x
 
 ## Supported Django Versions
-- 1.7.x or higher
-
-For Django 2.x or higher, use django-maintenancemode-2 1.1.10 or higher
-For Django 1.x, use 1.1.9
+- 3.x use the latest version
+- 2.x < 3, please use version 1.1.11
+- < 2, please use version 1.1.9
 
 ## Installation
 1. `pip install django-maintenancemode-2`

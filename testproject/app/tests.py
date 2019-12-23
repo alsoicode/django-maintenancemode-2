@@ -5,14 +5,13 @@ except ImportError:
 
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
-from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.test.client import Client
 from django.template import TemplateDoesNotExist
+from django.urls import reverse
 
 from maintenancemode import middleware as mw
 from maintenancemode.models import Maintenance, IgnoredURL
-from maintenancemode.utils.settings import DJANGO_MINOR_VERSION
 
 from .urls import urlpatterns
 
@@ -80,37 +79,28 @@ class MaintenanceModeMiddlewareTestCase(TestCase):
         Enabling the middleware without a proper 503 template should raise a
         template error
         """
-        if DJANGO_MINOR_VERSION > 7:
-            templates_override = [
-                {
-                    'BACKEND': 'django.template.backends.django.DjangoTemplates',
-                    'DIRS': [],
-                    'APP_DIRS': True,
-                    'OPTIONS': {
-                        'context_processors': [
-                            'django.template.context_processors.debug',
-                            'django.template.context_processors.request',
-                            'django.contrib.auth.context_processors.auth',
-                            'django.contrib.messages.context_processors.messages',
-                        ],
-                    },
+        templates_override = [
+            {
+                'BACKEND': 'django.template.backends.django.DjangoTemplates',
+                'DIRS': [],
+                'APP_DIRS': True,
+                'OPTIONS': {
+                    'context_processors': [
+                        'django.template.context_processors.debug',
+                        'django.template.context_processors.request',
+                        'django.contrib.auth.context_processors.auth',
+                        'django.contrib.messages.context_processors.messages',
+                    ],
                 },
-            ]
+            },
+        ]
 
-            with self.settings(TEMPLATES=templates_override):
-                mw.MAINTENANCE_MODE = True
+        with self.settings(TEMPLATES=templates_override):
+            mw.MAINTENANCE_MODE = True
 
-                self.assertRaises(
-                    TemplateDoesNotExist, self.client.get, self.home_url
-                )
-
-        else:
-            with self.settings(TEMPLATE_DIRS=()):
-                mw.MAINTENANCE_MODE = True
-
-                self.assertRaises(
-                    TemplateDoesNotExist, self.client.get, self.home_url
-                )
+            self.assertRaises(
+                TemplateDoesNotExist, self.client.get, self.home_url
+            )
 
     def test_enabled_middleware_with_template(self):
         """
@@ -187,7 +177,7 @@ class MaintenanceModeMiddlewareTestCase(TestCase):
         maintenance = Maintenance.objects.all()[0]
         IgnoredURL.objects.get_or_create(
             maintenance=maintenance,
-            pattern=urlpatterns[0].regex.pattern  # r'^ignored-page/$'
+            pattern=urlpatterns[0].pattern  # r'^ignored-page/$'
         )
 
         response = self.client.get(self.ignored_url)

@@ -23,3 +23,4 @@ testproject/db.sqlite3
 .settings/*.project
 .pydevproject
 .project
+settings.json

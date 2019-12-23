@@ -1,13 +1,11 @@
 from __future__ import unicode_literals
 
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 from django.db import IntegrityError
 from django.contrib.sites.models import Site
 
 
-@python_2_unicode_compatible
 class Maintenance(models.Model):
     site = models.OneToOneField(Site, on_delete=models.CASCADE)
     is_being_performed = models.BooleanField(
@@ -27,7 +25,6 @@ class Maintenance(models.Model):
         return list(qs)
 
 
-@python_2_unicode_compatible
 class IgnoredURL(models.Model):
     maintenance = models.ForeignKey(Maintenance, on_delete=models.CASCADE)
     pattern = models.CharField(max_length=255)
