@@ -68,5 +68,5 @@ class MaintenanceModeMiddleware(_base):
         resolver = resolvers.get_resolver(None)
 
         resolve = resolver.resolve_error_handler
-        callback, param_dict = resolve('503')
-        return callback(request, **param_dict)
+        callback = resolve('503')
+        return callback(request)
