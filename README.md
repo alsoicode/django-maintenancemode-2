@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/alsoicode/django-maintenancemode-2.svg)](https://travis-ci.org/alsoicode/django-maintenancemode-2)
 
-Current Version: 1.3
+Current Version: 1.3.1
 
 This project makes it easy to put your Django site into "maintenance mode", or more technically, return an HTTP 503 response.
 
