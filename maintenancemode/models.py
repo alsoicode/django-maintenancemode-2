@@ -1,7 +1,11 @@
 from __future__ import unicode_literals
 
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
+try:
+    from django.utils.translation import ugettext_lazy as _
+except ImportError:
+    # Needed for django 4 which renames ugettext_lazy
+    from django.utils.translation import gettext_lazy as _
 from django.db import IntegrityError
 from django.contrib.sites.models import Site
 
