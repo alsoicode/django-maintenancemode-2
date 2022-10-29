@@ -51,21 +51,33 @@ INSTALLED_APPS = (
     'maintenancemode',
 )
 
-MIDDLEWARE_CLASSES = (
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-)
+
+if DJANGO_MAJOR_VERSION == 1 and DJANGO_MAJOR_VERSION < 10:
+    MIDDLEWARE_CLASSES = (
+        'django.contrib.sessions.middleware.SessionMiddleware',
+        'django.middleware.common.CommonMiddleware',
+        'django.middleware.csrf.CsrfViewMiddleware',
+        'django.contrib.auth.middleware.AuthenticationMiddleware',
+        'django.contrib.messages.middleware.MessageMiddleware',
+        'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    )
+else:
+    MIDDLEWARE = [
+        'django.middleware.security.SecurityMiddleware',
+        'django.contrib.sessions.middleware.SessionMiddleware',
+        'django.middleware.common.CommonMiddleware',
+        'django.middleware.csrf.CsrfViewMiddleware',
+        'django.contrib.auth.middleware.AuthenticationMiddleware',
+        'django.contrib.messages.middleware.MessageMiddleware',
+        'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    ]
 
 TEMPLATE_DIRECTORY = os.path.join(BASE_DIR, 'templates')
 
 if DJANGO_MAJOR_VERSION >= 1:
 
     # Templates
-    if DJANGO_MINOR_VERSION < 8:
+    if DJANGO_MINOR_VERSION < 8 and DJANGO_MAJOR_VERSION == 1:
         TEMPLATE_DIRS = (
             TEMPLATE_DIRECTORY,
         )
@@ -101,15 +113,19 @@ if DJANGO_MAJOR_VERSION >= 1:
         ]
 
     # Sessions
-    if DJANGO_MINOR_VERSION == 6:
-        MIDDLEWARE_CLASSES += ('django.contrib.sessions.middleware.SessionMiddleware',)
-    elif DJANGO_MINOR_VERSION == 7:
-        MIDDLEWARE_CLASSES += ('django.contrib.auth.middleware.SessionAuthenticationMiddleware',)
-    else:
-        MIDDLEWARE_CLASSES += ('django.middleware.security.SecurityMiddleware',)
-
-MIDDLEWARE_CLASSES += ('maintenancemode.middleware.MaintenanceModeMiddleware',)
-
+    if DJANGO_MAJOR_VERSION == 1 and DJANGO_MINOR_VERSION == 7:
+        MIDDLEWARE_CLASSES += (
+            'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+        )
+    elif DJANGO_MAJOR_VERSION == 1:
+        MIDDLEWARE_CLASSES += (
+            'django.middleware.security.SecurityMiddleware',
+        )
+    
+if DJANGO_MAJOR_VERSION == 1 and DJANGO_MAJOR_VERSION < 10:
+    MIDDLEWARE_CLASSES += ('maintenancemode.middleware.MaintenanceModeMiddleware',)
+else:
+    MIDDLEWARE += ['maintenancemode.middleware.MaintenanceModeMiddleware']
 
 ROOT_URLCONF = 'testproject.urls'
 

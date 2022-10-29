@@ -1,9 +1,10 @@
-from django.conf.urls import url
+from django.urls import re_path
 
 from . import views
 
+app_name = 'app'
 
 urlpatterns = [
-    url(r'^ignored-page/$', views.ignored, name='ignored'),
-    url(r'^$', views.home, name='home'),
+    re_path(r'^ignored-page/$', views.IgnoredView.as_view(), name='ignored'),
+    re_path(r'^$', views.HomeView.as_view(), name='home'),
 ]

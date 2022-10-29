@@ -1,13 +1,20 @@
 Changes
 == == == =
 
+1.1.8
+- - - - -
+- Added Python 3.6 support.
+- Added Django 1.11 support.
+- Documentation updates.
+- Syntax improvements.
+
 1.1.7
 - - - - -
 Added `setmaintenance` management command.
 
 1.1.6
 - - - - -
-Added Django 1.1.0 support.
+Added Django 1.10 support.
 
 1.1.5
 - - - - -

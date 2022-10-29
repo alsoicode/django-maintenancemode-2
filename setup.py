@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 try:
     README = open('README.rst').read()
-except:
+except Exception:
     README = None
 
 setup(

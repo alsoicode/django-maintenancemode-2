@@ -24,7 +24,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('is_being_performed', models.BooleanField(default=False, verbose_name=b'In Maintenance Mode')),
-                ('site', models.ForeignKey(to='sites.Site')),
+                ('site', models.ForeignKey(to='sites.Site', on_delete=models.CASCADE)),
             ],
             options={
                 'verbose_name': 'Maintenance Mode',
@@ -34,6 +34,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='ignoredurl',
             name='maintenance',
-            field=models.ForeignKey(to='maintenancemode.Maintenance'),
+            field=models.ForeignKey(to='maintenancemode.Maintenance', on_delete=models.CASCADE),
         ),
     ]

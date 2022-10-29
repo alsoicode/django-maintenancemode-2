@@ -1,68 +1,72 @@
 import re
+from distutils.version import StrictVersion
 
-from django import VERSION as DJANGO_VERSION
-from django.utils import deprecation
+import django.conf.urls as urls
 from django.conf import settings
 from django.contrib.sites.models import Site
-from django.core import urlresolvers
-from django.db.utils import DatabaseError
-import django.conf.urls as urls
+from django.urls import resolvers
+from django.utils import deprecation
 
-from maintenancemode.models import Maintenance, IgnoredURL
+from maintenancemode.models import Maintenance
 from maintenancemode.utils.settings import (
-    DJANGO_MINOR_VERSION, MAINTENANCE_ADMIN_IGNORED_URLS)
+    DJANGO_VERSION, MAINTENANCE_ADMIN_IGNORED_URLS, MAINTENANCE_BLOCK_STAFF)
 
 urls.handler503 = 'maintenancemode.views.defaults.temporary_unavailable'
 urls.__all__.append('handler503')
 
+_base = deprecation.MiddlewareMixin if DJANGO_VERSION >= StrictVersion('1.10.0') else object
 
-class MaintenanceModeMiddleware(deprecation.MiddlewareMixin if DJANGO_VERSION >= (1, 10, 0) else object):
+
+class MaintenanceModeMiddleware(_base):
     def process_request(self, request):
         """
-        Get the maintenance mode from the database.
-        If a Maintenance value doesn't already exist in the database, we'll create one.
-        "has_add_permission" and "has_delete_permission" are overridden in admin
-        to prevent the user from adding or deleting a record, as we only need one
-        to affect multiple sites managed from one instance of Django admin.
+        Check if the current site is in maintenance.
         """
-        site = Site.objects.get_current()
 
-        try:
-            maintenance = Maintenance.objects.get(site=site)
-        except (Maintenance.DoesNotExist, DatabaseError):
-            for site in Site.objects.all():
-                maintenance = Maintenance.objects.create(site=site, is_being_performed=False)
-
-        # Allow access if maintenance is not being performed
-        if not maintenance.is_being_performed:
-            return None
+        # First check things that don't require a database access:
 
         # Allow access if remote ip is in INTERNAL_IPS
         if request.META.get('REMOTE_ADDR') in settings.INTERNAL_IPS:
             return None
 
-        # Allow access if the user doing the request is logged in and a
-        # staff member.
-        if hasattr(request, 'user') and request.user.is_staff:
+        # Check if the staff the user is allowed
+        if hasattr(request, 'user'):
+            if request.user.is_superuser:
+                return None
+
+            if not MAINTENANCE_BLOCK_STAFF and request.user.is_staff:
+                return None
+
+        # ok let's look at the db
+        site = Site.objects.get_current()
+        try:
+            maintenance = Maintenance.objects.get(site=site)
+        except Maintenance.DoesNotExist:
+            # Allow access if no matching Maintenance object exists
+            return None
+
+        # Allow access if maintenance is not being performed
+        if not maintenance.is_being_performed:
             return None
 
         # Check if a path is explicitly excluded from maintenance mode
-        ignored_url_list = [str(url.pattern) for url in
-            IgnoredURL.objects.filter(maintenance=maintenance)] + MAINTENANCE_ADMIN_IGNORED_URLS
+        ignored_url_list = set(
+            maintenance.ignored_url_patterns() + MAINTENANCE_ADMIN_IGNORED_URLS
+        )
 
-        ignored_url_patterns = tuple([re.compile(r'%s' % url) for url in ignored_url_list])
-        request_path = request.path_info[1:]
+        ignored_url_patterns = tuple(
+            re.compile(r'{}'.format(url)) for url in ignored_url_list
+        )
+
+        request_path = request.path_info.lstrip("/")
 
         for url in ignored_url_patterns:
             if url.match(request_path):
                 return None
 
         # Otherwise show the user the 503 page
-        resolver = urlresolvers.get_resolver(None)
+        resolver = resolvers.get_resolver(None)
 
-        if DJANGO_MINOR_VERSION < 8:
-            callback, param_dict = resolver._resolve_special('503')
-        else:
-            callback, param_dict = resolver.resolve_error_handler('503')
-
-        return callback(request, **param_dict)
+        resolve = resolver.resolve_error_handler
+        callback = resolve('503')
+        return callback(request)
