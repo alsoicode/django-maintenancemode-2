@@ -3,7 +3,7 @@ django-maintenancemode-2
 
 |Build Status|
 
-Current Version: 1.3.1
+Current Version: 2.0.0
 
 This project makes it easy to put your Django site into “maintenance
 mode”, or more technically, return an HTTP 503 response.
@@ -33,9 +33,8 @@ Supported Python Versions
 
 Supported Django Versions
 -------------------------
-
--  3.x use the latest version
--  2.x < 3, please use version 1.1.11
+-  4.x use the latest version
+-  2.x >= 3.x, please use version 1.3.1
 -  < 2, please use version 1.1.9
 
 Installation
@@ -97,13 +96,11 @@ The next time you visit the public side of the site, it will return a
 
 Or you can alternatively use the ``setmaintenance`` management command:
 
-::
+    # sets maintenance on for the current settings.SITE_ID
+    ./manage.py setmaintenance on
 
-       # sets maintenance on for the current settings.SITE_ID
-       ./manage.py setmaintenance on
-
-       # sets maintenance on for sites 2 and 3
-       ./manage.py setmaintenance on 2 3
+    # sets maintenance on for sites 2 and 3
+    ./manage.py setmaintenance on 2 3
 
 which can be useful for ``fabric`` deployment scripts etc.
 
@@ -114,13 +111,11 @@ Log in, un-check the “In Maintenance Mode” checkbox and save.
 
 Or you can alternatively use the ``setmaintenance`` management command:
 
-::
+    # sets maintenance off for the current settings.SITE_ID
+    $ ./manage.py setmaintenance off
 
-       # sets maintenance off for the current settings.SITE_ID
-       $ ./manage.py setmaintenance off
-
-       # sets maintenance off for sites 2 and 3
-       $ ./manage.py setmaintenance off 2 3
+    # sets maintenance off for sites 2 and 3
+    $ ./manage.py setmaintenance off 2 3
 
 Testing and Sample Application
 ------------------------------

@@ -23,4 +23,5 @@ testproject/db.sqlite3
 .settings/*.project
 .pydevproject
 .project
+.vscode
 settings.json

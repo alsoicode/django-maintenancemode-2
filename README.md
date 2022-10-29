@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/alsoicode/django-maintenancemode-2.svg)](https://travis-ci.org/alsoicode/django-maintenancemode-2)
 
-Current Version: 1.3.1
+Current Version: 2.0.0
 
 This project makes it easy to put your Django site into "maintenance mode", or more technically, return an HTTP 503 response.
 
@@ -19,8 +19,8 @@ You must have at least one Site entry in your database **before** installing dja
 - 2.7, 3.x
 
 ## Supported Django Versions
-- 3.x use the latest version
-- 2.x < 3, please use version 1.1.11
+- 4.x use the latest version
+- 2.x >= 3.x, please use version 1.3.1
 - < 2, please use version 1.1.9
 
 ## Installation
