@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/alsoicode/django-maintenancemode-2.svg)](https://travis-ci.org/alsoicode/django-maintenancemode-2)
 
-Current Version: 1.1.7
+Current Version: 2.0.0
 
 This project makes it easy to put your Django site into "maintenance mode", or more technically, return an HTTP 503 response.
 
@@ -16,12 +16,9 @@ This project differs slightly from other implementations in that the maintenance
 You must have at least one Site entry in your database **before** installing django-maintenancemode-2.
 
 ## Supported Django Versions
-- 1.10
-- 1.9
-- 1.8
-- 1.7
-- 1.6
-- 1.5 or below *should* work, but come on, it's time to upgrade :)
+- 4.x use the latest version
+- 2.x >= 3.x, please use version 1.3.1
+- < 2, please use version 1.1.9
 
 ## Installation
 1. `pip install django-maintenancemode-2`
@@ -56,10 +53,10 @@ To put a site into "Maintenance Mode", just check the "In Maintenance Mode" chec
 Or you can alternatively use the `setmaintenance` management command:
 
 ```
-    # sets maintenance on for the current settings.SITE_ID 
-    ./manage.py setmaintenance on 
+    # sets maintenance on for the current settings.SITE_ID
+    ./manage.py setmaintenance on
 
-    # sets maintenance on for sites 2 and 3 
+    # sets maintenance on for sites 2 and 3
     ./manage.py setmaintenance on 2 3
 ```
 
@@ -71,10 +68,10 @@ Just log in, un-check the "In Maintenance Mode" checkbox and save.
 Or you can alternatively use the `setmaintenance` management command:
 
 ```
-    # sets maintenance off for the current settings.SITE_ID 
-    $ ./manage.py setmaintenance off 
+    # sets maintenance off for the current settings.SITE_ID
+    $ ./manage.py setmaintenance off
 
-    # sets maintenance off for sites 2 and 3 
+    # sets maintenance off for sites 2 and 3
     $ ./manage.py setmaintenance off 2 3
 ```
 
